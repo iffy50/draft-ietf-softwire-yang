@@ -1,0 +1,177 @@
+  module ietf-softwire-ce {
+     yang-version 1.1;
+
+     namespace "urn:ietf:params:xml:ns:yang:ietf-softwire-ce";
+     prefix "softwire-ce";
+
+     import ietf-inet-types {prefix inet; }
+     import ietf-interfaces {prefix if; }
+     import iana-if-type {prefix ianaift; }
+     import ietf-softwire-common {prefix softwire-common; }
+     import ietf-yang-types { prefix yang; }
+
+     organization "Softwire Working Group";
+
+     contact
+       "
+       Qi Sun <sunqi.ietf@gmail.com>
+       Hao Wang <wangh13@mails.tsinghua.edu.cn>
+       Yong Cui <yong@csnet1.cs.tsinghua.edu.cn>
+       Ian <Farrer ian.farrer@telekom.de>
+       Sladjana Zoric <sladjana.zoric@telekom.de>
+       Mohamed Boucadair <mohamed.boucadair@orange.com>
+       Rajiv <Asati rajiva@cisco.com>
+       ";
+
+     description
+       "This document defines a YANG data module for the configuration and
+       management of A+P Softwire Customer Premises Equipment (CEs). It
+       covers Lightweight 4over6, MAP-E, and MAP-T mechanisms.
+
+       Copyright (c) 2017 IETF Trust and the persons identified
+       as authors of the code. All rights reserved.
+       This version of this YANG module is part of RFC XXX; see the RFC
+       itself for full legal notices.";
+
+     revision 2017-10-04 {
+       description
+         "Initial version of standalone CE model, with updates for
+         importing groups from ietf-softwire-common and
+         augmenting ietf-interfaces.";
+          reference "-02";
+     }
+
+   /*
+    * Features
+    */
+
+    feature binding {
+      description
+      "Lightweight 4over6 (binding) is an IPv4-over-IPv6 tunnelling
+       transition mechanism. Lightweight 4over6 is a solution designed
+       specifically for complete independence between IPv6 subnet
+       prefix (and /128 IPv6 address) and IPv4 address with or
+       without IPv4 address sharing.
+
+       This is accomplished by maintaining state for
+       each softwire (per-subscriber state) in the central lwAFTR and
+       a hub-and-spoke forwarding architecture. In order to delegate
+       the NAPT function and achieve IPv4 address sharing,
+       port-restricted IPv4 addresses needs to be allocated to CEs.
+
+       Besides lw4o6, this feature also covers MAP in 1:1 mode
+       (using offset=0, PSID explicitly defined)";
+
+     reference
+        "RFC7596";
+    }
+
+    feature algorithm {
+      description
+        "MAP-E is an IPv6 transition mechanism for transporting IPv4
+        packets across an IPv6 network using IP encapsulation. MAP-E
+        allows for a reduction of the amount of centralized state using
+        rules to express IPv4/IPv6 address mappings. This introduces an
+        algorithmic relationship between the IPv6 subnet
+        and IPv4 address.
+        The Mapping of Address and Port - Translation (MAP-T)
+        architecture is a double stateless NAT64 based solution. It uses
+        the stateless algorithmic address & transport layer port mapping
+        scheme defined in MAP-E. The MAP-T solution differs from MAP-E in
+        the use of IPv4-IPv6 translation, rather than encapsulation, as
+        the form of IPv6 domain transport.
+        This feature indicates the instance functions as a MAP-E or
+        MAP-T instance.";
+
+      reference
+        "RFC7597 & RFC7599";
+    }
+
+     // configuration parameters for CE softwire interface
+     augment "/if:interfaces/if:interface" {
+       when "if:type = 'ianaift:tunnel'";
+       description "CE Softwire interface configuration";
+
+       leaf softwire-payload-mtu {
+         type uint16;
+         description
+           "The payload MTU for the Softwire tunnel.";
+       }
+
+       leaf softwire-path-mru {
+         type uint16;
+         description
+           "The path MRU for the softwire (payload + encapsulation overhead).";
+       }
+
+       container ce-interface {
+         description "instances for CE";
+
+         choice ce-type {
+           description "Sets the CE softwire mechanism";
+
+           case binding {
+             if-feature binding;
+             description "CE binding configuration";
+             uses softwire-common:binding-entry;
+           }
+
+           case algorithm {
+             if-feature algorithm;
+             description "CE algorithm configuration";
+             uses softwire-common:algorithm;
+           }
+         }
+       }
+     }
+
+     // operational state parameters for CE softwire binding interface
+     augment "/if:interfaces-state/if:interface" {
+       when "if:type = 'ianaift:tunnel'";
+       description "CE Softwire binding interface operational state";
+
+       container ce-interface {
+         config false;
+         description
+           "Data nodes for the operational state of interfaces.";
+
+           leaf name {
+             type string;
+             description
+               "The name of the interface.";
+             reference
+               "RFC 2863: The Interfaces Group MIB - ifName";
+           }
+
+           leaf type {
+             type identityref {
+               base if:interface-type;
+             }
+             description
+               "The type of the interface.";
+             reference
+               "RFC 2863: The Interfaces Group MIB - ifType";
+          }
+          uses softwire-common:traffic-stat;
+       }
+     }
+
+
+  /*
+  * Notifications
+  */
+
+   notification softwire-ce-event {
+     if-feature binding;
+     description "CE notification";
+     leaf ce-binding-ipv6-addr-change {
+       type inet:ipv6-address;
+       mandatory true;
+       description
+         "The source softwire tunnel IPv6 address of the CE.
+          If 'b4-ipv6-addr-format' is false, or the lwb4's
+          binding-ipv6-address changes for any reason,
+          it SHOULD notify the NETCONF client.";
+     }
+   }
+  }
