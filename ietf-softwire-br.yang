@@ -134,21 +134,6 @@ module ietf-softwire-br {
     description
       "BR Instances";
 
-    /*list br-instance {
-      key "id";
-      description
-       "Configuration for a specific BR instance.";
-      leaf id {
-        type uint32;
-        mandatory true;
-        description "Instance identifier.";
-      }
-      leaf enable {
-        type boolean;
-        description
-          "Enable/disable the BR function.";
-      }*/
-
       choice br-type {
         description
           "Select binding or algorithmic BR functionality.";
@@ -158,9 +143,6 @@ module ietf-softwire-br {
             if-feature binding;
             description
               "lw4over6 (binding table) configuration.";
-            /*container br-instances {
-              description
-                "A set of BRs to be configured.";*/
               list br-instance {
                 key "id";
                 description
@@ -269,7 +251,6 @@ module ietf-softwire-br {
                     }
                   }
                 }
-              //}
 
               container traffic-stat {
                      description
@@ -308,9 +289,6 @@ module ietf-softwire-br {
               The instances advertise the map-e/map-t feature through the
               capability exchange mechanism when a NETCONF session is
               established.";
-            /*container algo-instances {
-              description
-                "Status of MAP-E instance(s).";*/
               list algo-instance {
                 key "id";
                 description "Instances for algorithm";
@@ -331,11 +309,9 @@ module ietf-softwire-br {
                }
               }
             }
-          //}
+          }
         }
       }
-    }
- // }
 
 /*
  * Notifications
