@@ -4,7 +4,6 @@ module ietf-softwire-common {
 
   import ietf-inet-types { prefix inet; }
   import ietf-yang-types { prefix yang; }
-  import ietf-nat { prefix nat; }
 
   organization "Softwire Working Group";
 
@@ -39,6 +38,44 @@ module ietf-softwire-common {
   * Grouping
   */
 
+  grouping port-set {
+      description
+        "Indicates a set of ports.
+         It may be a simple port range, or use the PSID algorithm
+         to represent a range of transport layer
+         ports which will be used by a NAPT.";
+
+         leaf psid-offset {
+            type uint8 {
+            range 0..16;
+         }
+           description
+          "The number of offset bits. In Lightweight 4over6,
+          the default value is 0 for assigning one contiguous
+          port range. In MAP-E/T, the default value is 6,
+          which excludes system ports by default and assigns
+          port ranges distributed across the entire port
+          space.";
+         }
+
+        leaf psid-len {
+           type uint8 {
+             range 0..15;
+           }
+          mandatory true;
+         description
+           "The length of PSID, representing the sharing
+           ratio for an IPv4 address.";
+         }
+
+        leaf psid {
+         type uint16;
+         mandatory true;
+         description
+           "Port Set Identifier (PSID) value, which
+            identifies a set of ports algorithmically.";
+        }
+     }
 
   grouping binding-entry {
     description
@@ -50,7 +87,6 @@ module ietf-softwire-common {
         type inet:ipv6-address;
         type inet:ipv6-prefix;
       }
-      // mandatory true;
       description
         "The IPv6 information for a binding entry.
          If this is an IPv6 prefix, it indicates that
@@ -62,7 +98,6 @@ module ietf-softwire-common {
     }
     leaf binding-ipv4-addr {
       type inet:ipv4-address;
-      // mandatory true;
       description
         "The IPv4 address assigned to the lwB4, which is
          used as the IPv4 external address
@@ -73,7 +108,7 @@ module ietf-softwire-common {
         "For Lightweight 4over6, the default value
         of offset should be 0, to configure one contiguous
         port range.";
-      uses nat:port-set {
+      uses port-set {
         refine "port-type/port-set-algo/psid-offset" {
           default "0";
         }
@@ -81,7 +116,6 @@ module ietf-softwire-common {
     }
     leaf br-ipv6-addr {
       type inet:ipv6-address;
-      // mandatory true;
       description
         "The IPv6 address for lwaftr.";
     }
@@ -178,27 +212,6 @@ module ietf-softwire-common {
             if not set, this rule is a BMR only and must not be used
             for forwarding.";
         }
-        /*leaf psid-offset {
-          type uint8 {
-            range 0..16;
-          }
-          mandatory true;
-          description
-            "The number of offset bits. In Lightweight 4over6, the default
-            value is 0 for assigning one contiguous port range. In MAP-E/T,
-            the default value is 6, which excludes system ports by default
-            and assigns distributed port ranges. If the this parameter is
-            larger than 0, the value of offset MUST be greater than 0.";
-        }
-        leaf psid-len {
-          type uint8 {
-            range 0..15;
-          }
-          mandatory true;
-          description
-            "The length of PSID, representing the sharing ratio for an IPv4
-            address.";
-        }*/
       }
     }
   }

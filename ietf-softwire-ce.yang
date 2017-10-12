@@ -87,6 +87,38 @@
         "RFC7597 & RFC7599";
     }
 
+    // Binding Entry
+  grouping binding-entry {
+    description
+      "The lwAFTR maintains an address binding table that contains
+      the binding between the lwB4's IPv6 address, the allocated IPv4
+      address and restricted port-set.";
+
+    leaf binding-ipv6info {
+
+      type union {
+        type inet:ipv6-address;
+        type inet:ipv6-prefix;
+      }
+
+      description
+        "The IPv6 information for a binding entry.
+         If this is type IPv6 prefix, it indicates that
+         the IPv6 source address of the CE is constructed
+         according to the description in RFC7596;
+         if it is type IPv6 address, it means the CE uses
+         any valid /128 address from a prefix assigned to
+         the CE.
+         ";
+    }
+
+     leaf br-ipv6-addr {
+      type inet:ipv6-address;
+      description
+        "The IPv6 address for lwaftr.";
+    }
+  }
+
      // configuration parameters for CE softwire interface
      augment "/if:interfaces/if:interface" {
        when "if:type = 'ianaift:tunnel'";
@@ -113,7 +145,7 @@
            case binding {
              if-feature binding;
              description "CE binding configuration";
-             uses softwire-common:binding-entry;
+             uses binding-entry;
            }
 
            case algorithm {
