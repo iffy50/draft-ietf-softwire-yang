@@ -303,8 +303,8 @@ module ietf-softwire-br {
                 }
                 uses softwire-common:algorithm;
                  container traffic-stat {
-                     description
-                        "traffic-stat";
+                    description
+                      "traffic-stat";
                     uses softwire-common:traffic-stat;
                }
               }
