@@ -1,11 +1,10 @@
 module ietf-softwire-common {
   namespace "urn:ietf:params:xml:ns:yang:ietf-softwire-common";
   prefix "softwire-common";
-/*
-*import ietf-inet-types { prefix inet; }
-*  import ietf-yang-types { prefix yang; }
-*/
 
+  import ietf-inet-types { prefix inet; }
+  import ietf-yang-types { prefix yang; }
+  import ietf-nat { prefix nat; }
 
   organization "Softwire Working Group";
 
