@@ -29,54 +29,54 @@ module ietf-softwire-common {
     This version of this YANG module is part of RFC XXX; see the RFC
     itself for full legal notices.";
 
-  revision 2017-10-04 {
+  revision 2017-10-19 {
     description
       "Initial version of containing a model for common softwire elements.";
-       reference "-02";
+    reference "-02";
   }
 
   /*
-  * Grouping
-  */
+   * Grouping
+   */
 
   grouping port-set {
-      description
-        "Indicates a set of ports.
-         It may be a simple port range, or use the PSID algorithm
-         to represent a range of transport layer
-         ports which will be used by a NAPT.";
+    description
+      "Indicates a set of ports.
+      It may be a simple port range, or use the PSID algorithm
+      to represent a range of transport layer
+      ports which will be used by a NAPT.";
 
-         leaf psid-offset {
-            type uint8 {
-            range 0..16;
-         }
-           description
-          "The number of offset bits. In Lightweight 4over6,
-          the default value is 0 for assigning one contiguous
+    leaf psid-offset {
+      type uint8 {
+        range 0..16;
+      }
+      description
+        "The number of offset bits. In Lightweight 4over6,
+        the default value is 0 for assigning one contiguous
           port range. In MAP-E/T, the default value is 6,
-          which excludes system ports by default and assigns
+        which excludes system ports by default and assigns
           port ranges distributed across the entire port
           space.";
-         }
+    }
 
-        leaf psid-len {
-           type uint8 {
-             range 0..15;
-           }
-          mandatory true;
-         description
-           "The length of PSID, representing the sharing
-           ratio for an IPv4 address.";
-         }
+    leaf psid-len {
+      type uint8 {
+        range 0..15;
+      }
+      mandatory true;
+      description
+        "The length of PSID, representing the sharing
+        ratio for an IPv4 address.";
+    }
 
-        leaf psid {
-         type uint16;
-         mandatory true;
-         description
-           "Port Set Identifier (PSID) value, which
-            identifies a set of ports algorithmically.";
-        }
-     }
+    leaf psid {
+      type uint16;
+      mandatory true;
+      description
+        "Port Set Identifier (PSID) value, which
+        identifies a set of ports algorithmically.";
+    }
+  }
 
   grouping binding-entry {
     description
@@ -90,19 +90,19 @@ module ietf-softwire-common {
       }
       description
         "The IPv6 information for a binding entry.
-         If this is an IPv6 prefix, it indicates that
-         the IPv6 source address of the CE is constructed
-         according to the description in RFC7596;
-         if it is an IPv6 address, it means the CE uses
-         any /128 address from the assigned CE prefix.
-         ";
+        If this is an IPv6 prefix, it indicates that
+        the IPv6 source address of the CE is constructed
+        according to the description in RFC7596;
+      if it is an IPv6 address, it means the CE uses
+        any /128 address from the assigned CE prefix.
+          ";
     }
     leaf binding-ipv4-addr {
       type inet:ipv4-address;
       description
         "The IPv4 address assigned to the lwB4, which is
-         used as the IPv4 external address
-         for lwB4 local NAPT44.";
+        used as the IPv4 external address
+        for lwB4 local NAPT44.";
     }
     container port-set {
       description
@@ -110,7 +110,7 @@ module ietf-softwire-common {
         of offset should be 0, to configure one contiguous
         port range.";
       uses port-set {
-        refine "port-type/port-set-algo/psid-offset" {
+        refine "psid-offset" {
           default "0";
         }
       }
@@ -131,8 +131,8 @@ module ietf-softwire-common {
     container algo-instances {
       description
         "A set of MAP-E or MAP-T instances to be configured,
-         applying to BRs and CEs. A MAP-E/T instance defines a MAP
-         domain comprising one or more MAP-CE and MAP-BR";
+        applying to BRs and CEs. A MAP-E/T instance defines a MAP
+          domain comprising one or more MAP-CE and MAP-BR";
       list algo-instance {
         key "id";
         description "MAP forwarding rule instance for MAP-E/MAP-T";
@@ -143,12 +143,11 @@ module ietf-softwire-common {
         }
         container algo-versioning {
           description "algorithm's version";
-          leaf algo-version {
+          leaf version {
             type uint64;
-            description "Incremental version number to
-            the algorithm";
+            description "Incremental version number for the algorithm";
           }
-          leaf algo-date {
+          leaf date {
             type yang:date-and-time;
             description "Timestamp to the algorithm";
           }
@@ -210,7 +209,7 @@ module ietf-softwire-common {
           description
             "This parameter specifies whether the rule may be used for
             forwarding (FMR). If set, this rule is used as an FMR;
-            if not set, this rule is a BMR only and must not be used
+          if not set, this rule is a BMR only and must not be used
             for forwarding.";
         }
       }
@@ -219,84 +218,69 @@ module ietf-softwire-common {
 
   grouping traffic-stat {
     description "Traffic statistics";
-    leaf sentIPv4Packet {
+    leaf sent-ipv4-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of decapsulated/translated IPv4 packets sent.";
     }
-    leaf sentIPv4Byte {
+    leaf sent-ipv4-byte {
       type yang:zero-based-counter64;
-      config false;
       description "Decapsulated/translated IPv4 traffic sent, in bytes";
     }
-    leaf sentIPv6Packet {
+    leaf sent-ipv6-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of encapsulated/translated IPv6 packets sent.";
     }
-    leaf sentIPv6Byte {
+    leaf sent-ipv6-byte {
       type yang:zero-based-counter64;
-      config false;
       description "Encapsulated/translated IPv6 traffic sent, in bytes";
     }
-    leaf rcvdIPv4Packet {
+    leaf rcvd-ipv4-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of IPv4 packets received for processing.";
     }
-    leaf rcvdIPv4Byte {
+    leaf rcvd-ipv4-byte {
       type yang:zero-based-counter64;
-      config false;
       description "IPv4 traffic received for processing, in bytes";
     }
-    leaf rcvdIPv6Packet {
+    leaf rcvd-ipv6-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of IPv6 packets received for processing.";
     }
-    leaf rcvdIPv6Byte {
+    leaf rcvd-ipv6-byte {
       type yang:zero-based-counter64;
       config false;
       description "IPv6 traffic received for processing, in bytes";
     }
-    leaf droppedIPv4Packet {
+    leaf dropped-ipv4-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of IPv4 packets dropped.";
     }
-    leaf droppedIPv4Byte {
+    leaf dropped-ipv4-byte {
       type yang:zero-based-counter64;
-      config false;
       description "IPv4traffic dropped, in bytes";
     }
-    leaf droppedIPv6Packet {
+    leaf dropped-ipv6-packet {
       type yang:zero-based-counter64;
-      config false;
       description "Number of IPv4 packets dropped.";
     }
-    leaf droppedIPv6Byte {
+    leaf dropped-ipv6-byte {
       type yang:zero-based-counter64;
-      config false;
       description "IPv4 traffic dropped, in bytes";
     }
-    leaf droppedIPv4Fragments {
-       type yang:zero-based-counter64;
-       config false;
-       description "Number of fragmented IPv4 packets dropped";
-    }
-    leaf droppedIPv4Bytes {
-       type yang:zero-based-counter64;
-       config false;
-       description "Fragmented IPv4 traffic dropped, in bytes";
-    }
-    leaf IPv6FragmentsReassembled {
+    leaf dropped-ipv4-fragments {
       type yang:zero-based-counter64;
-      config false;
+      description "Number of fragmented IPv4 packets dropped";
+    }
+    leaf dropped-ipv4-bytes {
+      type yang:zero-based-counter64;
+      description "Fragmented IPv4 traffic dropped, in bytes";
+    }
+    leaf ipv6-fragments-reassembled {
+      type yang:zero-based-counter64;
       description "Number of IPv6 fragments successfully reassembled";
     }
-    leaf IPv6FragmentsBytesReassembled {
+    leaf ipv6-fragments-bytes-reassembled {
       type yang:zero-based-counter64;
-      config false;
       description "IPv6 fragments successfully reassembled, in bytes";
     }
     leaf out-icmpv4-error-packets {
