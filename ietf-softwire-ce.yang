@@ -112,6 +112,7 @@ module ietf-softwire-ce {
 
     leaf br-ipv6-addr {
       type inet:ipv6-address;
+      mandatory true; 
       description
         "The IPv6 address for lwaftr.";
     }
