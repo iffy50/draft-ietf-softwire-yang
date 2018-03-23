@@ -300,12 +300,12 @@
         <t><list style="symbols">
             <t>IPv6 routing configuration, to enable CE to obtain one or more
             IPv6 prefixes for softwire usage. YANG module for routing
-            management is described in <xref target="RFC8022"></xref></t>
+            management is described in <xref target="RFC8349"></xref></t>
 
             <t>IPv4 routing configuration, to add one or more IPv4 destination
             prefix(es) reachable via the configured softwire. YANG module for
             routing management is described in <xref
-            target="RFC8022"></xref></t>
+            target="RFC8349"></xref></t>
 
             <t>Stateful NAT44 / NAPT management, to optionally specify a port
             set (PSID) along with its length. YANG module for NAT management
@@ -327,8 +327,8 @@
         <t>The CE must already have minimal IPv6 configuration in place so it
         is reachable by the NETCONF client to obtain softwire configuration.
         If additional IPv6 specific configuration is necessary, the YANG
-        modules defined in <xref target="RFC7277"></xref> and <xref
-        target="RFC8022"></xref> may be used.</t>
+        modules defined in <xref target="RFC8344"></xref> and <xref
+        target="RFC8349"></xref> may be used.</t>
       </section>
     </section>
 
@@ -525,7 +525,7 @@ module: ietf-softwire-br
           |        |     +--rw generate-icmpv6-errors?   boolean
           |        |     +--rw icmpv6-errors-rate?       uint32
           |        +--ro traffic-stat
-          |           +--ro discontinuity-time          yang:date-and-time
+          |           +--ro discontinuity-time       yang:date-and-time
           |           +--ro sent-ipv4-packets?
           |           |       yang:zero-based-counter64
           |           +--ro sent-ipv4-bytes?
@@ -681,7 +681,7 @@ module: ietf-softwire-br
 IF - Commented out as it isn't in the model any more. I forget what the
 intended use for this was. Should it be put back in the model, or can
 this descrtiption be removed?
---->
+-->
           </list></t>
 
         <t>Additional information on some of the important notification nodes
@@ -750,9 +750,9 @@ module ietf-softwire-ce {
       "Binding is used for configuring the Lightweight 4over6 mechanism.
 
       Binding based softwire mechanisms are IPv4-over-IPv6 tunnelling
-      transition mechanisms specifically intended for complete independence
-      between the IPv6 subnet prefix (and IPv6 address) and IPv4
-      address, with or without IPv4 address sharing.
+      transition mechanisms specifically intended for complete
+      independence between the IPv6 subnet prefix (and IPv6 address)
+      and IPv4 address, with or without IPv4 address sharing.
 
       This is accomplished by maintaining state for each softwire
       (per-subscriber state) in the central Border Relay (BR) and using
@@ -815,8 +815,8 @@ module ietf-softwire-ce {
         any valid /128 address from a prefix assigned to
         the CE.";
       reference
-        "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
-                  Architecture";
+        "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack
+                  Lite Architecture";
     }
 
     leaf br-ipv6-addr {
@@ -1022,8 +1022,8 @@ module ietf-softwire-br {
         any valid /128 address from a prefix assigned to
         the CE.";
       reference
-        "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
-                  Architecture";
+        "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack
+                  Lite Architecture";
     }
     leaf binding-ipv4-addr {
       type inet:ipv4-address;
@@ -1059,9 +1059,9 @@ module ietf-softwire-br {
       "Binding is used for configuring the Lightweight 4over6 mechanism.
 
       Binding based softwire mechanisms are IPv4-over-IPv6 tunnelling
-      transition mechanisms specifically intended for complete independence
-      between the IPv6 subnet prefix (and IPv6 address) and IPv4
-      address, with or without IPv4 address sharing.
+      transition mechanisms specifically intended for complete
+      independence between the IPv6 subnet prefix (and IPv6 address) and
+      IPv4 address, with or without IPv4 address sharing.
 
       This is accomplished by maintaining state for each softwire
       (per-subscriber state) in the central Border Relay (BR) and using
@@ -1191,19 +1191,20 @@ module ietf-softwire-br {
                   type boolean;
                   default true;
                   description
-                    "Enables the processing of incoming ICMPv4 packets.";
+                    "Enables the processing of incoming ICMPv4
+                    packets.";
                   reference
-                    "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
-                              Architecture";
+                    "RFC7596: Lightweight 4over6: An Extension to the
+                              Dual-Stack Lite Architecture";
                 }
 
                 leaf generate-icmpv4-errors {
                   type boolean;
                   default true;
                   description
-                    "Enables the generation of outgoing ICMPv4 error messages on
-                    receipt of an inbound IPv4 packet with no matching
-                    binding table entry.";
+                    "Enables the generation of outgoing ICMPv4 error
+                    messages on receipt of an inbound IPv4 packet with
+                    no matching binding table entry.";
                   reference
                     "Seciton 5.2 of RFC7596.";
                 }
@@ -1216,9 +1217,9 @@ module ietf-softwire-br {
                   type boolean;
                   default true;
                   description
-                    "Enables the generation of ICMPv6 errors messages if no
-                    matching binding table entry is found for a received
-                    packet.";
+                    "Enables the generation of ICMPv6 errors messages if
+                    no matching binding table entry is found for a
+                    received packet.";
                   reference
                     "Section 6.2 of RFC7596.";
                 }
@@ -1258,7 +1259,7 @@ module ietf-softwire-br {
                 Discontinuities in the value of this counter can occur
                 at re-initialization of the management system, and at
                 other times as indicated by the value of
-                ’discontinuity-time’.";
+                'discontinuity-time'.";
               }
 
               leaf hairpin-ipv4-packets {
@@ -1269,7 +1270,7 @@ module ietf-softwire-br {
                  Discontinuities in the value of this counter can occur
                  at re-initialization of the management system, and at
                  other times as indicated by the value of
-                ’discontinuity-time’.";
+                'discontinuity-time'.";
               }
 
               leaf active-softwire-num {
@@ -1282,7 +1283,7 @@ module ietf-softwire-br {
                  Discontinuities in the value of this counter can occur
                  at re-initialization of the management system, and at
                  other times as indicated by the value of
-                ’discontinuity-time’.";
+                'discontinuity-time'.";
               }
             }
           }
@@ -1421,7 +1422,7 @@ module ietf-softwire-br {
       the softwire CE and softwire BR YANG modules.</t>
 
       <figure>
-        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-common@2018-03-16.yang"
+    <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-common@2018-03-16.yang"
 
 module ietf-softwire-common {
   yang-version 1.1;
@@ -1468,10 +1469,10 @@ module ietf-softwire-common {
 
   grouping algorithm-instance {
     description
-      "Indicates that the instance supports the MAP-E and MAP-T function.
-      The instance advertises the MAP-E/MAP-T feature through the
-      capability exchange mechanism when a NETCONF session is
-      established.";
+      "Indicates that the instance supports the MAP-E and MAP-T
+      function. The instance advertises the MAP-E/MAP-T feature
+      through the capability exchange mechanism when a NETCONF
+      session is established.";
 
     leaf enable {
       type boolean;
@@ -1556,7 +1557,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf sent-ipv4-bytes {
       type yang:zero-based-counter64;
@@ -1565,7 +1566,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf sent-ipv6-packets {
       type yang:zero-based-counter64;
@@ -1574,7 +1575,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf sent-ipv6-bytes {
       type yang:zero-based-counter64;
@@ -1583,16 +1584,17 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf rcvd-ipv4-packets {
       type yang:zero-based-counter64;
-      description "Number of incoming IPv4 packets at the Internet-facing interface.
+      description "Number of incoming IPv4 packets at the
+      Internet-facing interface.
 
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf rcvd-ipv4-bytes {
       type yang:zero-based-counter64;
@@ -1601,7 +1603,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf rcvd-ipv6-packets {
       type yang:zero-based-counter64;
@@ -1610,7 +1612,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf rcvd-ipv6-bytes {
       type yang:zero-based-counter64;
@@ -1619,25 +1621,27 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv4-packets {
       type yang:zero-based-counter64;
-      description "Number of IPv4 packets dropped at the Internet-facing interface.
+      description "Number of IPv4 packets dropped at the
+      Internet-facing interface.
 
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv4-bytes {
       type yang:zero-based-counter64;
-      description "IPv4 traffic dropped at the Internet-facing interface, in bytes
+      description "IPv4 traffic dropped at the Internet-facing
+      interface, in bytes.
 
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv6-packets {
       type yang:zero-based-counter64;
@@ -1646,7 +1650,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv6-bytes {
       type yang:zero-based-counter64;
@@ -1655,7 +1659,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv4-fragments {
       type yang:zero-based-counter64;
@@ -1664,7 +1668,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf dropped-ipv4-fragment-bytes {
       type yang:zero-based-counter64;
@@ -1673,7 +1677,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf ipv6-fragments-reassembled {
       type yang:zero-based-counter64;
@@ -1682,7 +1686,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf ipv6-fragments-bytes-reassembled {
       type yang:zero-based-counter64;
@@ -1691,7 +1695,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf out-icmpv4-error-packets {
       type yang:zero-based-counter64;
@@ -1700,7 +1704,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
     leaf out-icmpv6-error-packets {
       type yang:zero-based-counter64;
@@ -1709,7 +1713,7 @@ module ietf-softwire-common {
       Discontinuities in the value of this counter can occur
       at re-initialization of the management system, and at
       other times as indicated by the value of
-      ’discontinuity-time’.";
+      'discontinuity-time'.";
     }
   }
 }
@@ -1817,6 +1821,8 @@ module ietf-softwire-common {
 
       <?rfc include='reference.RFC.5246'?>
 
+      <?rfc include='reference.RFC.6020'?>
+
       <?rfc include='reference.RFC.6241'?>
 
       <?rfc include='reference.RFC.6242'?>
@@ -1841,9 +1847,9 @@ module ietf-softwire-common {
     <references title="Informative References">
       <?rfc include='reference.RFC.6991'?>
 
-      <?rfc include='reference.RFC.7277'?>
+      <?rfc include='reference.RFC.8344'?>
 
-      <?rfc include='reference.RFC.8022'?>
+      <?rfc include='reference.RFC.8349'?>
 
       <?rfc include='reference.RFC.8340'?>
 
@@ -2041,7 +2047,7 @@ module ietf-softwire-common {
         softwire tunnel. This name is then referenced by the routing
         configuration for the IPv4 route. The following section provides
         example configuration for the CE's IPv4 routing, using the YANG module
-        described in <xref target="RFC8022"></xref>.</t>
+        described in <xref target="RFC8349"></xref>.</t>
 
         <figure anchor="lw4o6-ce-routing-example-xml"
                 title="lw4o6 CE Routing Configuration XML">

@@ -20,7 +20,7 @@ module ietf-softwire-common {
     ";
 
   description
-    "This document defines a YANG data model for the configuration and
+    "This document defines a YANG data module for the configuration and
     management of A+P Softwire Customer Premises Equipment (CEs). It
     covers Lightweight 4over6, MAP-E and MAP-T mechanisms.
 
@@ -43,15 +43,15 @@ module ietf-softwire-common {
 
   grouping algorithm-instance {
     description
-      "Indicate the instance support the MAP-E and MAP-T function.
-      The instance advertises the map-e/map-t feature through the
+      "Indicates that the instance supports the MAP-E and MAP-T function.
+      The instance advertises the MAP-E/MAP-T feature through the
       capability exchange mechanism when a NETCONF session is
       established.";
 
     leaf enable {
       type boolean;
       description
-        "Enable/disable individual MAP-E or MAP-T rule.";
+        "Enable/disable an individual MAP-E or MAP-T rule.";
     }
     container algo-versioning {
       description "algorithm's version";
@@ -85,7 +85,7 @@ module ietf-softwire-common {
         leaf dmr-ipv6-prefix {
           type inet:ipv6-prefix;
           description
-            "The IPv6 prefix of the MAP-T BR. ";
+            "The IPv6 prefix of the MAP-T BR.";
         }
       }
     }
@@ -117,8 +117,8 @@ module ietf-softwire-common {
       description
         "This parameter specifies whether the rule may be used for
         forwarding (FMR). If set, this rule is used as an FMR;
-        if not set, this rule is a BMR only and must not be used
-        for forwarding.";
+        if not set, this rule is a Basic Mapping Rule (BMR) only
+        and must not be used for forwarding.";
     }
   }
 
@@ -126,76 +126,165 @@ module ietf-softwire-common {
     description "Traffic statistics";
     leaf sent-ipv4-packets {
       type yang:zero-based-counter64;
-      description "Number of decapsulated and forwarded IPv4 packets.";
+      description "Number of decapsulated and forwarded IPv4 packets.
+      
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf sent-ipv4-bytes {
       type yang:zero-based-counter64;
-      description "Decapsulated/translated IPv4 traffic sent, in bytes";
+      description "Decapsulated/translated IPv4 traffic sent, in bytes
+     
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf sent-ipv6-packets {
       type yang:zero-based-counter64;
       description "Number of encapsulated IPv6 packets sent.
-      ";
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf sent-ipv6-bytes {
       type yang:zero-based-counter64;
-      description "Encapsulated IPv6 traffic sent, in bytes";
+      description "Encapsulated IPv6 traffic sent, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf rcvd-ipv4-packets {
       type yang:zero-based-counter64;
-      description "Number of incoming IPv4 packets at the Internet-facing interface.";
+      description "Number of incoming IPv4 packets at the Internet-facing interface.
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf rcvd-ipv4-bytes {
       type yang:zero-based-counter64;
-      description "IPv4 traffic received for processing, in bytes";
+      description "IPv4 traffic received for processing, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf rcvd-ipv6-packets {
       type yang:zero-based-counter64;
-      description "Number of IPv4-in-IPv6 packets received";
+      description "Number of IPv4-in-IPv6 packets received
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf rcvd-ipv6-bytes {
       type yang:zero-based-counter64;
-      description "IPv4-in-IPv6 traffic received, in bytes";
+      description "IPv4-in-IPv6 traffic received, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv4-packets {
       type yang:zero-based-counter64;
-      description "Number of IPv4 packets dropped at the Internet-facing interface.";
+      description "Number of IPv4 packets dropped at the Internet-facing interface.
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv4-bytes {
       type yang:zero-based-counter64;
-      description "IPv4 traffic dropped at the Internet-facing interface, in bytes";
+      description "IPv4 traffic dropped at the Internet-facing interface, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv6-packets {
       type yang:zero-based-counter64;
-      description "Number of IPv4-in-IPv6 packets dropped.";
+      description "Number of IPv4-in-IPv6 packets dropped.
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv6-bytes {
       type yang:zero-based-counter64;
-      description "IPv4-in-IPv6 traffic dropped, in bytes";
+      description "IPv4-in-IPv6 traffic dropped, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv4-fragments {
       type yang:zero-based-counter64;
-      description "Number of fragmented IPv4 packets dropped";
+      description "Number of fragmented IPv4 packets dropped
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf dropped-ipv4-fragment-bytes {
       type yang:zero-based-counter64;
-      description "Fragmented IPv4 traffic dropped, in bytes";
+      description "Fragmented IPv4 traffic dropped, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf ipv6-fragments-reassembled {
       type yang:zero-based-counter64;
-      description "Number of IPv6 fragments successfully reassembled";
+      description "Number of IPv6 fragments successfully reassembled
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf ipv6-fragments-bytes-reassembled {
       type yang:zero-based-counter64;
-      description "IPv6 fragments successfully reassembled, in bytes";
+      description "IPv6 fragments successfully reassembled, in bytes
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf out-icmpv4-error-packets {
       type yang:zero-based-counter64;
-      description "Internally generated ICMPv4 error packets.";
+      description "Internally generated ICMPv4 error packets.
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
     leaf out-icmpv6-error-packets {
       type yang:zero-based-counter64;
-      description "Internally generated ICMPv6 error packets.";
+      description "Internally generated ICMPv6 error packets.
+
+      Discontinuities in the value of this counter can occur
+      at re-initialization of the management system, and at
+      other times as indicated by the value of
+      ’discontinuity-time’.";
     }
   }
 }

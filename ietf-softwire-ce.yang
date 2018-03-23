@@ -44,18 +44,21 @@ module ietf-softwire-ce {
 
   feature binding {
     description
-      "Binding is used for configuring Lightweight 4over6 mechanism.
+      "Binding is used for configuring the Lightweight 4over6 mechanism.
 
-      Binding softwire mechanisms are IPv4-over-IPv6 tunnelling
-      transition mechanisms specifically for complete independence
-      between IPv6 subnet prefix (and /128 IPv6 address) and IPv4
-      address with or without IPv4 address sharing.
+      Binding based softwire mechanisms are IPv4-over-IPv6 tunnelling
+      transition mechanisms specifically intended for complete independence
+      between the IPv6 subnet prefix (and IPv6 address) and IPv4
+      address, with or without IPv4 address sharing.
 
       This is accomplished by maintaining state for each softwire
-      (per-subscriber state) in the central Border Relay (BR) and a
-      hub-and-spoke forwarding architecture. In order to delegate the
+      (per-subscriber state) in the central Border Relay (BR) and using
+      a hub-and-spoke forwarding architecture. In order to delegate the
       NAPT function and achieve IPv4 address sharing, port-restricted
-      IPv4 addresses needs to be allocated to CEs.";
+      IPv4 addresses needs to be allocated to CEs.
+
+      This feature indicates that the instance functions as a binding
+      based softwire instance.";
 
     reference
       "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
@@ -78,7 +81,7 @@ module ietf-softwire-ce {
       algorithmic address & transport layer port mapping algorithm
       defined for MAP-E.
 
-      This feature indicates the instance functions as a MAP-E or
+      This feature indicates that the instance functions as a MAP-E or
       MAP-T instance.";
 
     reference
@@ -102,10 +105,10 @@ module ietf-softwire-ce {
 
       description
         "The IPv6 information for a binding entry.
-        If this is type IPv6 prefix, it indicates that
+        When the IPv6 prefix type is used, 
         the IPv6 source address of the CE is constructed
         according to the description in RFC7596;
-        if it is type IPv6 address, it means the CE uses
+        if the IPv6 address type is used, the CE can use
         any valid /128 address from a prefix assigned to
         the CE.";
       reference
@@ -117,7 +120,7 @@ module ietf-softwire-ce {
       type inet:ipv6-address;
       mandatory true;
       description
-        "The IPv6 address for binding BR.";
+        "The IPv6 address for of the binding BR.";
     }
   }
 
@@ -130,7 +133,7 @@ module ietf-softwire-ce {
       type uint16;
       units bytes;
       description
-        "The payload MTU for the Softwire tunnel.";
+        "The payload IPv4 MTU for the Softwire tunnel.";
     }
 
     leaf softwire-path-mru {
@@ -156,8 +159,8 @@ module ietf-softwire-ce {
 
         container algo-instances {
           description
-            "Indicate the instances support the MAP-E and MAP-T
-            function. The instances advertise the map-e/map-t 
+            "Indicates thtat the instances supports the MAP-E and MAP-T
+            function. The instances advertise the MAP-E/MAP-T 
             feature through the capability exchange mechanism 
             when a NETCONF session is established.";
           list algo-instance {
@@ -199,4 +202,3 @@ module ietf-softwire-ce {
     }
   }
 }
-
