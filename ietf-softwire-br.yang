@@ -12,9 +12,9 @@ module ietf-softwire-br {
   contact
     "
     Qi Sun <sunqi.ietf@gmail.com>
-    Hao Wang <wangh13@mails.tsinghua.edu.cn>
+    Linhui Sun <lh.sunlinh@gmail.com>
     Yong Cui <yong@csnet1.cs.tsinghua.edu.cn>
-    Ian <Farrer ian.farrer@telekom.de>
+    Ian Farrer <ian.farrer@telekom.de>
     Sladjana Zoric <sladjana.zoric@telekom.de>
     Mohamed Boucadair <mohamed.boucadair@orange.com>
     Rajiv <Asati rajiva@cisco.com>
@@ -22,66 +22,113 @@ module ietf-softwire-br {
 
   description
     "This document defines a YANG data module for the configuration and
-    management of A+P Softwire Border Routers. It covers Lightweight 4over6,
-    MAP-E, and MAP-T mechanisms.
+    management of A+P Softwire Border Routers. It covers Lightweight
+    4over6, MAP-E, and MAP-T mechanisms.
 
-    Copyright (c) 2017 IETF Trust and the persons identified
+    Copyright (c) 2018 IETF Trust and the persons identified
     as authors of the code. All rights reserved.
     This version of this YANG module is part of RFC XXX; see the RFC
     itself for full legal notices.";
 
-  revision 2017-10-19 {
-    description
-      "Update...";
-    reference "-02";
-  }
-
-  revision 2017-06-14 {
-    description
-      "Monolithic version of ietf-softwire divided into separate CE and BR
-      models. Added icmp handling and improved counters.";
-    reference "-06";
-  }
-  revision 2016-06-04 {
-    description
-      "Version-05: Combined MAP-E/MAP-T into a single tree. Added binding
-      table/algorthm versioning";
-    reference "-05";
-  }
-
-  revision 2015-09-30 {
-    description
-      "Version-04: Fix YANG syntax; Add flags to map-rule; Remove
-      the map-rule-type element. ";
-    reference "-04";
-  }
-
-  revision 2015-04-07 {
-    description
-      "Version-03: Integrate lw4over6; Updata state nodes; Correct
-      grammar errors; Reuse groupings; Update descriptions.
-      Simplify the model.";
-    reference "-03";
-  }
-
-  revision 2015-02-10 {
-    description
-      "Version-02: Add notifications.";
-    reference "-02";
-  }
-
-
-  revision 2015-02-06 {
-    description
-      "Version-01: Correct grammar errors; Reuse groupings; Update
-      descriptions.";
-    reference "-01";
-  }
-
-  revision 2015-02-02 {
+  revision 2018-03-16 {
     description
       "Initial revision.";
-    reference "-00";
+    reference
+      "RFC XXXX: YANG Modules for IPv4-in-IPv6 Address plus Port
+                 Softwires";
+  }
+
+  /*
+   * Groupings
+   */
+
+  grouping port-set {
+    description
+      "Indicates a set of ports.
+
+      It may be a simple port range, or use the PSID algorithm
+      to represent a range of transport layer ports which will
+      be used by a NAPT.";
+
+    leaf psid-offset {
+      type uint8 {
+        range 0..16;
+      }
+      description
+        "The number of offset bits. In Lightweight 4over6,
+        the default value is 0 for assigning one contiguous
+        port range. In MAP-E/T, the default value is 6,
+        which means the system ports (0-1023) are excluded by
+        default and assigns port ranges distributed across the
+        entire port space, depending on either psid-len or the
+        number of contiguous ports.";
+    }
+
+    leaf psid-len {
+      type uint8 {
+        range 0..15;
+      }
+      mandatory true;
+      description
+        "The length of PSID, representing the sharing
+        ratio for an IPv4 address. This, along with ea-len, also
+        helps to calculate the number of contiguous ports per
+        port range";
+    }
+
+    leaf psid {
+      type uint16;
+      mandatory true;
+      description
+        "Port Set Identifier (PSID) value, which
+        identifies a set of ports algorithmically.";
+    }
+  }
+
+  grouping binding-entry {
+    description
+      "The binding BR maintains an address binding table that 
+      contains the binding between the CE's IPv6 address, 
+      the allocated IPv4 address and restricted port-set.";
+    leaf binding-ipv6info {
+      type union {
+        type inet:ipv6-address;
+        type inet:ipv6-prefix;
+      }
+      description
+        "The IPv6 information for a binding entry.
+        If this is an IPv6 prefix, it indicates that
+        the IPv6 source address of the CE is constructed
+        according to the description in RFC7596;
+        if it is an IPv6 address, it means the CE uses
+        any /128 address from the assigned CE prefix.";
+      reference
+        "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
+                  Architecture";
+    }
+    leaf binding-ipv4-addr {
+      type inet:ipv4-address;
+      description
+        "The IPv4 address assigned to the binding CE, 
+        which is used as the IPv4 external address
+        for binding CE local NAPT44.";
+    }
+    container port-set {
+      description
+        "For Lightweight 4over6, the default value
+        of offset should be 0, to configure one contiguous
+        port range.";
+      uses port-set {
+        refine "psid-offset" {
+          default "0";
+        }
+      }
+    }
+    leaf br-ipv6-addr {
+      type inet:ipv6-address;
+      description
+        "The IPv6 address for binding BR.";
+    }
   }
 
   /*
@@ -90,23 +137,24 @@ module ietf-softwire-br {
 
   feature binding {
     description
-      "Binding is used for configuring Lightweight 4over6 or MAP with EA=0
-      (with or without PSID) softwires (described in [RFC7597] Appendix A
-      Examples 4 and 5).
+      "Binding is used for configuring Lightweight 4over6 mechanism.
 
       Binding softwire mechanisms are IPv4-over-IPv6 tunnelling
       transition mechanisms specifically for complete independence
-      between IPv6 subnet prefix (and /128 IPv6 address) and IPv4 address with
-      or without IPv4 address sharing.
+      between IPv6 subnet prefix (and /128 IPv6 address) and IPv4
+      address with or without IPv4 address sharing.
 
-      This is accomplished by maintaining state for
-      each softwire (per-subscriber state) in the central Border Relay (BR) and
-      a hub-and-spoke forwarding architecture. In order to delegate
-      the NAPT function and achieve IPv4 address sharing,
-      port-restricted IPv4 addresses needs to be allocated to CEs.";
+      This is accomplished by maintaining state for each softwire
+      (per-subscriber state) in the central Border Relay (BR) and a
+      hub-and-spoke forwarding architecture. In order to delegate the
+      NAPT function and achieve IPv4 address sharing, port-restricted
+      IPv4 addresses needs to be allocated to CEs.";
 
     reference
-      "RFC7596, RFC7597 & RFC7599";
+      "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
+                Architecture
+       RFC7597: Mapping of Address and Port with Encapsulation (MAP-E) 
+       RFC7599: Mapping of Address and Port using Translation (MAP-T)";
   }
 
   feature algorithm {
@@ -115,19 +163,20 @@ module ietf-softwire-br {
       packets across an IPv6 network using IP encapsulation. MAP-E
       allows for a reduction of the amount of centralized state using
       rules to express IPv4/IPv6 address mappings. This introduces an
-      algorithmic relationship between the IPv6 subnet
-      and IPv4 address.
-      The Mapping of Address and Port - Translation (MAP-T)
-      architecture is a double stateless NAT64 based solution. It uses
-      the stateless algorithmic address & transport layer port mapping
-      scheme defined in MAP-E. The MAP-T solution differs from MAP-E in
-      the use of IPv4-IPv6 translation, rather than encapsulation, as
-      the form of IPv6 domain transport.
+      algorithmic relationship between the IPv6 subnet and IPv4 address.
+
+      MAP-T is an IPv6 transition mechanism for transporting IPv4
+      packets across an IPv6 network using IP translation. It leverages
+      double stateless NAT64 based solution as well as the stateless
+      algorithmic address & transport layer port mapping algorithm
+      defined for MAP-E.
+
       This feature indicates the instance functions as a MAP-E or
       MAP-T instance.";
 
     reference
-      "RFC7597 & RFC7599";
+      "RFC7597: Mapping of Address and Port with Encapsulation (MAP-E) 
+       RFC7599: Mapping of Address and Port using Translation (MAP-T)";
   }
 
   container br-instances {
@@ -142,11 +191,11 @@ module ietf-softwire-br {
         container binding {
           if-feature binding;
           description
-            "lw4over6 (binding table) configuration.";
-          list br-instance {
+            "binding mechanism (binding table) configuration.";
+          list bind-instance {
             key "id";
             description
-              "A set of lwAFTRs to be configured.";
+              "A set of binding BRs to be configured.";
             container binding-table-versioning {
               description "binding table's version";
               leaf version{
@@ -167,50 +216,51 @@ module ietf-softwire-br {
             }
             leaf name {
               type string;
-              description "The name for the lwaftr.";
+              description "The name for the binding BR.";
             }
             leaf softwire-num-threshold {
               type uint32;
               mandatory true;
               description
                 "The maximum number of softwires that can be created on
-                the lwAFTR.";
+                the binding BR.";
             }
             leaf softwires-payload-mtu {
               type uint16;
               units bytes;
               mandatory true;
               description
-                "The payload MTU for Lightweight 4over6 softwire.";
+                "The payload MTU for binding softwire.";
             }
             leaf softwire-path-mru {
               type uint16;
               units bytes;
               mandatory true;
               description
-                "The path MRU for Lightweight 4over6 softwire.";
+                "The path MRU for binding softwire.";
             }
             leaf enable-hairpinning {
               type boolean;
               default true;
               description
                 "Enables/disables support for locally forwarding
-                (hairpinning) traffic between two CEs (RFC7596
-                    Section 6.2)";
+                (hairpinning) traffic between two CEs";
+              reference
+                "RFC7596 Section 6.2";
             }
             container binding-table {
               description "binding table";
               list binding-entry {
                 key "binding-ipv6info";
                 description "binding entry";
-                uses softwire-common:binding-entry;
+                uses binding-entry;
               }
             }
             container icmp-policy {
               description
-                "The lwAFTR can be configured to process or drop incoming ICMP
-                messages, and to generate outgoing ICMP error messages or
-                not.";
+                "The binding BR can be configured to process or drop
+                incoming ICMP messages, and to generate outgoing ICMP
+                error messages or not.";
 
               container icmpv4-errors {
                 description
@@ -219,8 +269,11 @@ module ietf-softwire-br {
                   type boolean;
                   default true;
                   description
-                    "Whether to allow processing of incoming ICMPv4 packets.
-                    (RFC7596 )";
+                    "Whether to allow processing of incoming ICMPv4
+                    packets.";
+                  reference
+                    "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
+                              Architecture";
                 }
 
                 leaf generate-icmpv4-errors {
@@ -229,7 +282,9 @@ module ietf-softwire-br {
                   description
                     "Whether to generate outgoing ICMP error messages on
                     receipt of an inbound IPv4 packet with no matching
-                    binding table entry (RFC7596 Seciton 5.2).";
+                    binding table entry.";
+                  reference
+                    "Seciton 5.2 of RFC7596.";
                 }
               }
 
@@ -241,15 +296,17 @@ module ietf-softwire-br {
                   default true;
                   description
                     "Whether to generate ICMPv6 errors messages if no
-                    matching binding table entry is found (RFC7596
-                        Section 6.2)";
+                    matching binding table entry is found.";
+                  reference
+                    "Section 6.2 of RFC7596.";
                 }
                 leaf icmpv6-errors-rate {
-                  type uint16;
+                  type uint32;
                   description
                     "Rate limit threshold in messages per-second
-                    for sending ICMPv6 errors messages (RFC7596
-                        Section 9.)";
+                    for sending ICMPv6 errors messages";
+                  reference
+                    "Section 9 of RFC7596.";
                 }
               }
             }
@@ -257,8 +314,20 @@ module ietf-softwire-br {
             container traffic-stat {
               config false;
               description
-                "traffic-stat";
+                "Traffic statistics information for the BR.";
+
+              leaf discontinuity-time {
+                type yang:date-and-time;
+                mandatory true;
+                description
+                  "The time on the most recent occasion at which the BR 
+                   instance suffered a discontinuity.  This must be 
+                   initialized when the BR instance is configured 
+                   or rebooted.";
+              }
+
               uses softwire-common:traffic-stat;
+
               leaf hairpin-ipv4-bytes {
                 type yang:zero-based-counter64;
                 description "IPv4 packets locally routed between two CEs
@@ -273,9 +342,10 @@ module ietf-softwire-br {
 
               leaf active-softwire-num {
                 type uint32;
+                config false;
                 description
                   "The number of currently active softwires on the
-                  lw4over6 (binding) instance.";
+                  binding instance.";
               }
             }
           }
@@ -286,10 +356,10 @@ module ietf-softwire-br {
         container algorithm {
           if-feature algorithm;
           description
-            "Indicate the instances support the MAP-E and MAP-T function.
-            The instances advertise the map-e/map-t feature through the
-            capability exchange mechanism when a NETCONF session is
-            established.";
+            "Indicate the instances support the MAP-E and MAP-T
+            function. The instances advertise the map-e/map-t feature
+            through the capability exchange mechanism when a NETCONF
+            session is established.";
           list algo-instance {
             key "id";
             description "Instances of algorithm";
@@ -298,19 +368,24 @@ module ietf-softwire-br {
               mandatory true;
               description "id";
             }
-            leaf name {
-              type string;
-              description "The MAP instance name.";
-            }
-            uses softwire-common:algorithm {
-              augment "algo-instances/algo-instance"{
-                description "Augments the port-set group for the algorithm.";
-                uses softwire-common:port-set;
-            }
+            uses softwire-common:algorithm-instance;
+            container port-set {
+              description "Indicates a set of ports.";
+              uses port-set;
             }
             container traffic-stat {
+              config false;
               description
-                "traffic-stat";
+                "Traffic statistics information for the BR.";
+              leaf discontinuity-time {
+                type yang:date-and-time;
+                mandatory true;
+                description
+                  "The time on the most recent occasion at which the BR 
+                   instance suffered a discontinuity.  This must be 
+                   initialized when the BR instance is configured 
+                   or rebooted.";
+              }
               uses softwire-common:traffic-stat;
             }
           }
@@ -322,14 +397,14 @@ module ietf-softwire-br {
   /*
    * Notifications
    */
-  notification softwire-br-event {
+  notification softwire-binding-instance-event {
     if-feature binding;
-    description "Notifications for BR.";
-    leaf br-id {
+    description "Notifications for binding instance.";
+    leaf bind-id {
       type leafref {
         path
           "/br-instances/binding/"
-          + "br-instance/id";
+          + "bind-instance/id";
       }
       description "...";
     }
@@ -337,7 +412,7 @@ module ietf-softwire-br {
       type leafref {
         path
           "/br-instances/binding/"
-          + "br-instance[id=current()/../br-id]/"
+          + "bind-instance[id=current()/../bind-id]/"
           + "binding-table/binding-entry/binding-ipv6info";
       }
       description
@@ -349,7 +424,7 @@ module ietf-softwire-br {
       description
         "Notify the client that a binding entry has been added.
         The ipv6 address of that entry is the index. The client
-        get other information from the lwaftr about the entry
+        get other information from the binding BR about the entry
         indexed by that ipv6 address.
         ";
     }
@@ -357,7 +432,7 @@ module ietf-softwire-br {
       type leafref {
         path
           "/br-instances/binding/"
-          + "br-instance[id=current()/../br-id]/"
+          + "bind-instance[id=current()/../bind-id]/"
           + "binding-table/binding-entry/binding-ipv6info";
       }
       description "...";
@@ -366,14 +441,14 @@ module ietf-softwire-br {
 
   notification softwire-algorithm-instance-event {
     if-feature algorithm;
-    description "Notifications for MAP-E or MAP-T.";
+    description "Notifications for algorithmic instance.";
     leaf algo-id {
       type leafref {
         path
           "/br-instances/algorithm/algo-instance/id";
       }
       mandatory true;
-      description "MAP-E or MAP-T event.";
+      description "algorithmic instance event.";
     }
     leaf-list invalid-entry-id {
       type leafref {
