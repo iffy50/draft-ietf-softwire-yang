@@ -1490,7 +1490,8 @@ module ietf-softwire-br {
     <section anchor="commons-softwire-elements"
              title="Common Softwire Element Groups YANG Module">
       <t>The following YANG module contains definitions that are used by both
-      the softwire CE and softwire BR YANG modules.</t>
+      the softwire CE and softwire BR YANG modules. This module imports
+      typedefs from <xref target="RFC6991"></xref>.</t>
 
       <figure>
         <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-common@2018-03-16.yang"
@@ -1940,8 +1941,6 @@ module ietf-softwire-common {
     </references>
 
     <references title="Informative References">
-      <?rfc include='reference.RFC.6991'?>
-
       <?rfc include='reference.RFC.8344'?>
 
       <?rfc include='reference.RFC.8349'?>

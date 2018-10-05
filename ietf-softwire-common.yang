@@ -3,8 +3,16 @@ module ietf-softwire-common {
   namespace "urn:ietf:params:xml:ns:yang:ietf-softwire-common";
   prefix "softwire-common";
 
-  import ietf-inet-types { prefix inet; }
-  import ietf-yang-types { prefix yang; }
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991 - Common YANG Data Types.";
+   }
+  import ietf-yang-types {
+    prefix yang; 
+    reference
+      "RFC 6991 - Common YANG Data Types.";
+  }
 
   organization "Softwire Working Group";
 

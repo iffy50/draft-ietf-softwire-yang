@@ -3,10 +3,26 @@ module ietf-softwire-ce {
   namespace "urn:ietf:params:xml:ns:yang:ietf-softwire-ce";
   prefix "softwire-ce";
 
-  import ietf-inet-types {prefix inet; }
-  import ietf-interfaces {prefix if; }
-  import iana-if-type {prefix ianaift; }
-  import ietf-softwire-common {prefix softwire-common; }
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991 - Common YANG Data Types.";
+  }
+  import ietf-interfaces {
+    prefix if;
+    reference
+      "RFC8343 - A YANG Data Model for Interface Management.";
+  }
+  import iana-if-type {
+    prefix ianaift;
+    reference
+      "RFC7224 - IANA Interface Type YANG Module.";
+  }
+  import ietf-softwire-common {
+    prefix softwire-common;
+    reference
+      "RFCXXXX - YANG Modules for A+P Softwires.";
+  }
 
   organization "Softwire Working Group";
 
