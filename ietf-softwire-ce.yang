@@ -6,22 +6,22 @@ module ietf-softwire-ce {
   import ietf-inet-types {
     prefix inet;
     reference
-      "RFC 6991 - Common YANG Data Types.";
+      "RFC 6991 - Common YANG Data Types";
   }
   import ietf-interfaces {
     prefix if;
     reference
-      "RFC8343 - A YANG Data Model for Interface Management.";
+      "RFC8343 - A YANG Data Model for Interface Management";
   }
   import iana-if-type {
     prefix ianaift;
     reference
-      "RFC7224 - IANA Interface Type YANG Module.";
+      "RFC7224 - IANA Interface Type YANG Module";
   }
   import ietf-softwire-common {
     prefix softwire-common;
     reference
-      "RFCXXXX - YANG Modules for A+P Softwires.";
+      "RFCXXXX - YANG Modules for A+P Softwires";
   }
 
   organization "Softwire Working Group";
@@ -77,10 +77,10 @@ module ietf-softwire-ce {
       based softwire instance.";
 
     reference
-      "RFC7596: Lightweight 4over6: An Extension to the Dual-Stack Lite 
+      "RFC7596 - Lightweight 4over6: An Extension to the Dual-Stack Lite 
                 Architecture
-       RFC7597: Mapping of Address and Port with Encapsulation (MAP-E) 
-       RFC7599: Mapping of Address and Port using Translation (MAP-T)";
+       RFC7597 - Mapping of Address and Port with Encapsulation (MAP-E) 
+       RFC7599 - Mapping of Address and Port using Translation (MAP-T)";
   }
 
   feature algorithm {

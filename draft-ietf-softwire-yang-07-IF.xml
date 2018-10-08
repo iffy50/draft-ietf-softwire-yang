@@ -724,7 +724,9 @@ this descrtiption be removed?
     </section>
 
     <section anchor="ce-yang-module" title="Softwire CE YANG Module">
-      <t>This module imports typedefs from <xref target="RFC6991"></xref>.</t>
+      <t>The ietf-softwire-ce YANG model references <xref target="RFC7596"/>,
+      <xref target="RFC7597"/>, <xref target="RFC7599"/>, and imports
+      typedefs from <xref target="RFC6991"></xref>.</t>
 
       <figure>
         <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-ce@2018-03-16.yang"
@@ -943,7 +945,9 @@ module ietf-softwire-ce {
     </section>
 
     <section anchor="br-yang-module" title="BR Softwire YANG Module">
-      <t>This module imports typedefs from <xref target="RFC6991"></xref>.</t>
+      <t>The ietf-softwire-br YANG model references <xref target="RFC7596"/>,
+      <xref target="RFC7597"/>, <xref target="RFC7599"/>, and imports
+      typedefs from <xref target="RFC6991"></xref>.</t>
 
       <figure>
         <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-br@2018-03-16.yang"
@@ -1487,10 +1491,12 @@ module ietf-softwire-br {
       </figure>
     </section>
 
-    <section anchor="commons-softwire-elements"
+    <section anchor="common-softwire-elements"
              title="Common Softwire Element Groups YANG Module">
       <t>The following YANG module contains definitions that are used by both
-      the softwire CE and softwire BR YANG modules. This module imports
+      the softwire CE and softwire BR YANG modules. The ietf-softwire-common
+      YANG model references <xref target="RFC7596"/>,
+      <xref target="RFC7597"/>, <xref target="RFC7599"/>, and imports
       typedefs from <xref target="RFC6991"></xref>.</t>
 
       <figure>
@@ -1815,7 +1821,7 @@ module ietf-softwire-common {
     </section>
 
     <section anchor="security" title="Security Considerations">
-      <t>The YANG module defined in this document is designed to be accessed
+      <t>The YANG modules defined in this document are designed to be accessed
       via network management protocols such as NETCONF <xref
       target="RFC6241"></xref> or RESTCONF <xref target="RFC8040"></xref>. The
       lowest NETCONF layer is the secure transport layer, and the
@@ -1859,7 +1865,7 @@ module ietf-softwire-common {
         </figure></t>
 
       <t>This document requests that IANA registers the following YANG modules
-      in the "YANG Module Names" registry <xref target="RFC7950"></xref>.
+      in the "YANG Module Names" registry <xref target="RFC6020"></xref>.
       <figure>
           <artwork><![CDATA[
             name: ietf-softwire-ce
@@ -1914,6 +1920,8 @@ module ietf-softwire-common {
       <?rfc include='reference.RFC.3688'?>
 
       <?rfc include='reference.RFC.5246'?>
+
+      <?rfc include='reference.RFC.6020'?>
 
       <?rfc include='reference.RFC.6241'?>
 

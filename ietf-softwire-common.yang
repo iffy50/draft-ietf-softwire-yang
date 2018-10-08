@@ -6,12 +6,12 @@ module ietf-softwire-common {
   import ietf-inet-types {
     prefix inet;
     reference
-      "RFC 6991 - Common YANG Data Types.";
+      "RFC 6991 - Common YANG Data Types";
    }
   import ietf-yang-types {
     prefix yang; 
     reference
-      "RFC 6991 - Common YANG Data Types.";
+      "RFC 6991 - Common YANG Data Types";
   }
 
   organization "Softwire Working Group";
@@ -55,6 +55,9 @@ module ietf-softwire-common {
       The instance advertises the MAP-E/MAP-T feature through the
       capability exchange mechanism when a NETCONF session is
       established.";
+    reference
+      "RFC7697 - Mapping of Address and Port with Encapsulation (MAP-E)
+      RFC7599 - Mapping of Address and Port using Translation (MAP-T)";
 
     leaf enable {
       type boolean;
