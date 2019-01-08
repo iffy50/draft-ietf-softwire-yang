@@ -1,0 +1,334 @@
+I believe that this I-D needs some admin-type changes to make it usable.
+
+All three modules import some or all of
+
+ietf-inet-types
+ietf-interfaces
+iana-if-type
+ietf-softwire-common
+
+These imports should have YANG reference statements identifying the
+relevant RFC, probably
+ 6991
+ 8343
+ 7244
+ XXXX
+
+and these need to be Normative References for the I-D; 8343 is, 6991 is
+not.
+
+IF - 6991 added
+ietf-inet-types "RFC 6991 - Common YANG Data Types."
+ietf-yang-types "RFC 6991 - Common YANG Data Types."
+ietf-interfaces "RFC8343 - A YANG Data Model for Interface Management."
+iana-if-type RFC7224 - IANA Interface Type YANG Module."
+
+DONE
+
+
+The first two modules have a sentence mentioning the use of RFC6991;
+this should mention all the modules referenced, those above and
+RFC7596
+RFC7597
+RFC7599:
+these last are already Normative References.  A similar sentence is
+needed for the third module for the RFC that it references.
+
+The third module is a bit light on references - I cannot see any!
+
+There are three references to RFC XXX- I suspect that RFC XXXX is
+intended.
+
+[if - They're self-references to be updated on publication. ]
+
+IANA Considerations references RFC7950 - this is a poor reference since
+all it says is 'Go look at RFC6020' which thus should be the reference
+here.
+
+[if - changed ref to RFC6020]
+
+Security Considerations starts "The YANG module defined in this document
+....
+Give us a clue - there are three of them:-)
+
+[if - Updated citing 3 modules.]
+
+Appendix A.  Configutation Examples
+
+Tom Petch
+
+####################################################
+
+Some more thoughts on this I-D
+
+No mention of NMDA - I see the IESG asking for such a statement in
+Abstract and in the body of an I-D
+
+
+*********** Needs doing in the body (check NMDA compliance) *******
+
+Abbreviations are expanded but on the nth use, not the first use e.g.
+BR, PSID; they probably should be expanded on first use within the YANG
+module as well.
+
+'   Please update the "revision" date of the YANG module.'  There are
+three of them:-)
+
+Terminology is problematic especially as it seems inconsistent with the
+Normatively Referenced RFC7596, RFC7597, RFC7599.
+
+Customer Premises Equipment (CEs ..
+CE is a well known abbreviations for Customer Edge, as oppposed to
+Provider Edge, and this is not meant here.   Indeed, RFC7599 uses CE for
+Customer Edge.  Customer Premises Equipment is widely abbreviated to
+CPE.  RFC7596, a  Normative Reference, has 'Customer Premises Equipment
+(CPE)' which I should be used here.
+
+[if - CE is now used throughout and 'provider' has been removed]
+
+In places, it is 'MAP-E, and MAP-T', elsewhere 'MAP-E or MAP-T'. Does
+feature 'algorithm' mean both are supported or just one, and if one, how
+can the user tell?
+
+The description clause of 'module ietf-softwire-common' is misleading.
+The introductory sentence of the section accurately describes the module
+as common definitions but the description clause claims to configure
+Lw4o6, MAP-E and MAP-T which it seems wrong.
+
+'algorithm' is widely (mis?)used in this I-D.  The Normative Reference
+RFC7597 is much easier to follow since it mostly talks of 'Mapping
+Algorithm' or 'Mapping Rule'.  I think
+     case algorithm {
+       if-feature algorithm;
+       container algo-instances {
+         list algo-instance {
+with
+     grouping algorithm-instance {
+in softwire-common and
+     case algorithm {
+       if-feature algorithm;
+       container algorithm {
+         if-feature algorithm;
+need a different term or terms.  Likewise
+     case binding {
+       if-feature binding;
+       container binding {
+         if-feature binding;
+         list bind-instance {
+for binding.  A widely used, and helpful convention is to have a list
+the plural - interfaces - and entries singular - interface; that would
+help here.  And what does
+         if-feature algorithm;
+add that
+       if-feature algorithm;
+does not?
+
+BR is a well known abbreviation for Border Router; here it used for MAP
+Border Relay and while RFC7599 says 'A MAP BR may also be referred to as
+simply a "BR" within the context of MAP.', I think that the context here
+is wider - the modules are not just MAP - and the term should be 'MAP
+BR' not just 'BR'.
+
+After my previous message
+ietfa.amsl.com.
+gave me a bounce message for
+yong@csnet1.cs.tsinghua.edu.cn>
+
+Overall, I get a slight flavour that this is written by those intimately
+acquainted with the technology (although not so much with the RFC!) for
+similar readers.
+
+Tom Petch
+
+########################################################
+
+And some technical comments on this I-D as a result of which, I do not
+think this is ready to progress; perhaps no show stoppers, just a lot of
+changes are needed IMHO.  The more I look into this I-D, the less I
+understand (which may be my ignorance of YANG).
+
+This I-D is concerned with three tunnel types (Lw4o6, MAP-E, MAP-T).  In
+several places, you have
+ augment "/if:interfaces/if:interface" {
+   when "if:type = 'ianaift:tunnel'";
+This will augment for all tunnel types, not just those of this I-D.  I
+think you should have your own three (?) derived identities for the
+three specific tunnels described here, all in the common module.
+
+The three YANG modules are for Customer Premises Equipment, Border Relay
+and a common module. Both the first two define two features, binding and
+algorithm, binding for Lw4o6 and algorithm for MAP-E/MAP-T - I do not
+know if/how this duplication of features will work (and as I said
+before, I am confused about support for 'MAP-E and MAP-T' versus 'MAP-E
+or
+MAP-T' both of which phrases appear in the I-D).  As with tunnel types,
+should
+there be three features, should they be in the common module?  (yes, and
+yes)
+
+2.2
+'they should be imported here, as needed. '
+import is a YANG technical term as used in this I-D so I think the use
+of it here wrong
+
+'   The CE must already have minimal IPv6 configuration'
+Could that also be IPv4 which, by definition, is going to be widespread
+in the deployment?
+
+3.2
+softwire-path-mru:
+what is the point of this field?  I looked at RFC7596, RFC7597 and
+RFC7599
+and could find no reference thereto.  I went back to their references,
+such as RFC4821, RFC2473, RFC1981, RFC6346 ... - no joy.  I had thought
+to suggest a reference was called for but seeing the complete absence of
+any connection, I think that a substantial explanation is called for.
+
+Likewise, I note that references to MTU are qualified with IPv4 but
+references to MRU are not; rather, this object
+'set the maximum IPv6 softwire packet size that can be received ...'
+when
+'the implementation is unable to calculate the correct IPv4  size  '
+Really?
+
+'IPv6 prefix type' or ''IPv6 address type'.
+Well, no It can be
+type  ipv6-prefix or ipv6-address
+
+This description of the  ietf-softwire-ce module describes objects that
+are not in the  ietf-softwire-ce module, which confuses me.  Rather they
+are in the ietf-softwire-common module.  I think you need a description
+of the objects in the ietf-softwire-common module first and then moving
+on to the two specific modules.  The sense I get is that while splitting
+into three makes sense, the consequences have not been thought through.
+
+The descriptions of objects here are (mostly) good, but do not appear in
+the YANG module.  Those in the YANG module are shallow by comparison and
+should be at least as comprehensive as those in the body of the I-D; the
+YANG module has to be able to survive on its own.
+
+'The version number is  incremented  '
+Any constraints on the increment?  one, a hundred, a million...?
+
+4.2
+As with 3.2, the descriptions here of the objects look fine, those in
+the description clauses of the YANG module do not; they are thin by
+comparison.
+
+5
+leaf br-ipv6-addr {
+    mandatory true;
+       "The IPv6 address for of the binding BR.";
+This is not quite English.
+And since this object is MAP-E only, should it be, can it be, mandatory?
+
+             leaf id {
+             type uint32;
+             mandatory true;
+             description "Algorithm Instance ID";
+Any constraints on how this 32-bit integer will be used?
+
+6
+
+leaf softwire-num-max {  type uint32;
+            description
+               "The maximum number of softwires that can be created on
+               the binding BR.";
+Any restriction on the range of this. Can it be zero?
+
+/ "Enables the generation of ICMPv6 errors messages/
+ "Enables the generation of ICMPv6 error messages/
+
+               leaf icmpv4-rate {
+               leaf icmpv6-rate {
+Can these validly be zero?  Also, I think that there should be a
+recommended value (the Transport Area are keen on such things)
+
+           leaf id {
+             type uint32;
+             mandatory true;
+             description "id";
+Not the most helpful of descriptions
+
+'This must be  initialized when the BR instance is configured'
+Perhaps
+"This must be reset to the current date-and-time when the BR instance is
+configured"
+
+'Notify the client that a specific binding entry has been
+expired/invalid.
+Perhaps
+'Notify the client that a specific binding entry has expired or is
+invalid.'
+
+     leaf date {
+       type yang:date-and-time;
+       description "Timestamp to the algorithm";
+Not a helpful description IMHO
+
+   leaf name {
+     type string;
+     description "The name for the instance.";
+ditto; what is the namespace, how is the name used?
+
+"Embedded Address (EA) bits are the IPv4 EA-bits in the IPv6
+       address identify an IPv4 prefix/address (or part thereof) or
+       a shared IPv4 address (or part thereof) and a port-set
+       identifier.
+This is not quite English
+
+8
+The IESG like to see TLS1.3 RFC8446 here
+
+I have yet to review the examples, but if my suggestion above result in
+changes, then the examples will change significantly.
+
+Tom Petch
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Yes! I had thought that my first pass would encompass all my comments
+but I just got drawn in deeper - and deeper.
+
+I think that among my three e-mails there are three larger points which
+will cause a ripple effect across the I-D.
+
+A) I do not understand whether the feature 'algorithm'  mandates support
+for both MAP-E and MAP-T or just one or the other.  The description
+clause says
+' the instance functions as a MAP-E or MAP-T instance'
+and does not say, clearly AFAICT, that the instance will support both at
+once - or not.  This in turn changes the meaning of a number of
+statements elsewhere.  Whatever it means I would like to see that spelt
+out clearly and consistently.
+
+In passing, I kept having to remind myself which feature is which, not
+intutive to me.  I think you should at least use swalgorithm and
+swbinding since the namespace of features is, in some sense, IETF-wide;
+and I would use MAP, not algorithm but that reflects where I am coming
+from and may not reflect the views of the group.
+
+B) The definition of these common features belongs ... in the common
+module, not duplicated.
+
+C) You are mandating pw type configuration on all tunnels, requiring
+e.g. an IPv4 in IPv4 tunnel to have an IPv6 address.  You should define
+identities specific to pw and use those for
+
+   when "if:type = ..
+
+I suggest four, with names something like swlw4o6 and swMAP, derived
+from
+'ianaift:tunnel'
+and then swMAP-E and sw|MAP-T derived from swMAP; this then makes it
+easy to specify something as either lw4o6; or MAP-E and MAP-T; or MAP-E;
+or MAP-T.
+If you see a need for something that applies to all three technologies
+then I might add another, but I see that as less unlikely.
+
+And these common identities belong ... in the common module!
+
+I did try and find a YANG Doctor who had looked at this I-D and would
+tell me that my proposals are on the right track (or not because ...)
+but have not found one.
+
