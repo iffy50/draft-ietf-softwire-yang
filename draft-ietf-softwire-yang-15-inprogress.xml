@@ -382,8 +382,8 @@ module: ietf-softwire-ce
             softwire packet size that can be received, including the
             encapsulation/translation overhead. Needed if the softwire
             implementation is unable to correctly calculate the correct IPv4
-            Maximum Receive Unit (MRU) size automatically <xref
-            target="RFC4213"></xref>.</t>
+            payload Maximum Receive Unit (MRU) size automatically (see 
+            Section 3.2 of <xref target="RFC4213"></xref>).</t>
 
             <t>ce-type: provides a choice statement allowing the binding or
             algorithmic softwire mechanisms to be selected.</t>
@@ -1197,10 +1197,10 @@ module ietf-softwire-br {
 
                    A binding instance may be provided with binding 
                    entries that may change in time (e.g., increase
-                   the size of the port set). When a party victim of an
-                   abuse presents an external IP address/port, the version
-                   of the binding table is important because, depending 
-                   on the version, a distinct customer may be 
+                   the size of the port set). When a party who is the 
+                   victim of abuse presents an external IP address/port, 
+                   the version of the binding table is important because,
+                   depending on the version, a distinct customer may be 
                    identified.
 
                    The timestamp is used as a key to find the 
@@ -1776,8 +1776,7 @@ module ietf-softwire-common {
     leaf rcvd-ipv4-packets {
       type yang:zero-based-counter64;
       description
-        "Number of incoming IPv4 packets at the
-         Internet-facing interface.
+        "Number of IPv4 packets received.
 
          Discontinuities in the value of this counter can occur
          at re-initialization of the management system, and at
@@ -1787,7 +1786,7 @@ module ietf-softwire-common {
     leaf rcvd-ipv4-bytes {
       type yang:zero-based-counter64;
       description
-        "IPv4 traffic received for processing, in bytes.
+        "IPv4 traffic received, in bytes.
 
          Discontinuities in the value of this counter can occur
          at re-initialization of the management system, and at
