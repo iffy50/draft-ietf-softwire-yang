@@ -1992,6 +1992,10 @@ module ietf-softwire-common {
           that this interval parameter can be disabled or set to a low value
           by the misbehaving entity, the same problem will be observed. </t>
         </list></t>
+      
+      <t>Security considerations related to lw4o6, MAP-T, and MAP-E are discussed in <xref target="RFC7596"></xref>,
+        <xref target="RFC7597"></xref>, and <xref target="RFC7599"></xref> respectively.</t> 
+
     </section>
 
     <section anchor="iana" title="IANA Considerations">
