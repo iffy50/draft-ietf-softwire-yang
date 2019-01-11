@@ -1973,15 +1973,15 @@ module ietf-softwire-common {
           <t>Setting the MTU to a low value, which may increase the number of
           fragments ('softwire-payload-mtu').</t>
 
-          <t>Disabling hairpinning ('enable-hairpinning') to prevent
-          communications between CEs. </t>
+          <t>Disabling hairpinning (i.e., setting 'enable-hairpinning' to
+          'false') to prevent communications between CEs. </t>
 
           <t>Setting 'softwire-num-max' to an arbitrary high value, which may
           be exploited by a misbehaving user to perform a DoS on the binding
           BR by mounting a massive number of softwires.</t>
 
           <t>Setting 'icmpv4-rate' or 'icmpv6-rate' to a low value, which may
-          lead to the deactivation of ICMP message handling. </t>
+          lead to the deactivation of ICMP messages handling. </t>
 
           <t>Accessing to privacy data maintained by the BR (e.g., the binding
           table or the algorithm configuration). Such data can be misused to
