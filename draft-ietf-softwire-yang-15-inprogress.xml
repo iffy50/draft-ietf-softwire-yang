@@ -11,26 +11,6 @@
     <title abbrev="YANG Modules for A+P Softwires">YANG Modules for
     IPv4-in-IPv6 Address plus Port (A+P) Softwires</title>
 
-    <author fullname="Yong Cui" initials="Y." surname="Cui">
-      <organization>Tsinghua University</organization>
-
-      <address>
-        <postal>
-          <street></street>
-
-          <city>Beijing</city>
-
-          <code>100084</code>
-
-          <country>P.R. China</country>
-        </postal>
-
-        <phone>+86-10-6260-3059</phone>
-
-        <email>cuiyong@tsinghua.edu.cn</email>
-      </address>
-    </author>
-
     <author fullname="Ian Farrer" initials="I." role="editor" surname="Farrer">
       <organization>Deutsche Telekom AG</organization>
 
@@ -72,87 +52,7 @@
       </address>
     </author>
 
-    <author fullname="Qi Sun" initials="Q." surname="Sun">
-      <organization>Tsinghua University</organization>
-
-      <address>
-        <postal>
-          <street></street>
-
-          <city>Beijing</city>
-
-          <code>100084</code>
-
-          <country>P.R. China</country>
-        </postal>
-
-        <phone>+86-10-6278-5822</phone>
-
-        <email>sunqi.ietf@gmail.com</email>
-      </address>
-    </author>
-
-    <author fullname="Linhui Sun" initials="L." surname="Sun">
-      <organization>Tsinghua University</organization>
-
-      <address>
-        <postal>
-          <street></street>
-
-          <city>Beijing</city>
-
-          <code>100084</code>
-
-          <country>P.R. China</country>
-        </postal>
-
-        <phone>+86-10-6278-5822</phone>
-
-        <email>lh.sunlinh@gmail.com</email>
-      </address>
-    </author>
-
-    <author fullname="Sladjana Zechlin" initials="S." surname="Zechlin">
-      <organization>Deutsche Telekom AG</organization>
-
-      <address>
-        <postal>
-          <street>Landgrabenweg 151</street>
-
-          <city>Bonn</city>
-
-          <region>NRW</region>
-
-          <code>53227</code>
-
-          <country>Germany</country>
-        </postal>
-
-        <email>sladjana.zechlin@telekom.de</email>
-      </address>
-    </author>
-
-    <author fullname="Rajiv Asati" initials="R." surname="Asati">
-      <organization>Cisco Systems, Inc.</organization>
-
-      <address>
-        <postal>
-          <street>7025 Kit Creek Rd.</street>
-
-          <city>RTP</city>
-
-          <region>NC</region>
-
-          <code>27709</code>
-
-          <country>USA</country>
-        </postal>
-
-        <email>Rajiva@cisco.com</email>
-      </address>
-    </author>
-
-    <date day="7" month="January" year="2019" />
+    <date day="11" month="January" year="2019" />
 
     <workgroup>Softwire Working Group</workgroup>
 
@@ -219,8 +119,8 @@
 
       <t>This document defines YANG modules <xref target="RFC7950"></xref>
       that can be used to configure and manage A+P softwire elements using the
-      NETCONF <xref target="RFC6241"></xref>, or RESTCONF 
-      <xref target="RFC8040"/> protocols for:</t>
+      NETCONF <xref target="RFC6241"></xref>, or RESTCONF <xref
+      target="RFC8040"></xref> protocols for:</t>
 
       <t><list hangIndent="22" style="symbols">
           <t>Configuration</t>
@@ -237,10 +137,10 @@
       target="RFC7599"></xref>, and the YANG data modelling language defined
       in <xref target="RFC7950"></xref>.</t>
 
-      <t>The YANG modules in this document adopt the Network Management Datastore
-      Architecture (NMDA) <xref target="RFC8342"></xref>. The meanings of the 
-      symbols used in tree diagrams are defined in <xref target="RFC8340"></xref>.
-      </t>
+      <t>The YANG modules in this document adopt the Network Management
+      Datastore Architecture (NMDA) <xref target="RFC8342"></xref>. The
+      meanings of the symbols used in tree diagrams are defined in <xref
+      target="RFC8340"></xref>.</t>
 
       <t>The document uses the abbrieviation 'BR' as a general term for
       softwire tunnel concentrators, including both MAP Border Routers <xref
@@ -776,7 +676,7 @@ this descrtiption be removed?
       target="I-D.ietf-softwire-iftunnel"></xref>.</t>
 
       <figure>
-        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-ce@2018-11-30.yang"
+        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-ce@2019-01-11.yang"
 
 module ietf-softwire-ce {
   yang-version 1.1;
@@ -834,7 +734,7 @@ module ietf-softwire-ce {
      management of A+P Softwire Customer Premises Equipment (CEs). It
      covers Lightweight 4over6, MAP-E, and MAP-T mechanisms.
           
-     Copyright (c) 2018 IETF Trust and the persons identified as
+     Copyright (c) 2019 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
           
      Redistribution and use in source and binary forms, with or
@@ -847,7 +747,7 @@ module ietf-softwire-ce {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2018-10-23 {
+  revision 2019-01-11 {
     description
       "Initial revision.";
     reference
@@ -1037,7 +937,7 @@ module ietf-softwire-ce {
       also imports the 'ietf-softwire-common' module.</t>
 
       <figure>
-        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-br@2018-10-23.yang"
+        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-br@2019-01-11.yang"
 
 module ietf-softwire-br {
   yang-version 1.1;
@@ -1091,7 +991,7 @@ module ietf-softwire-br {
      management of A+P Softwire Border Routers. It covers Lightweight
      4over6, MAP-E, and MAP-T mechanisms.
           
-     Copyright (c) 2018 IETF Trust and the persons identified as
+     Copyright (c) 2019 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
           
      Redistribution and use in source and binary forms, with or
@@ -1104,7 +1004,7 @@ module ietf-softwire-br {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2018-10-23 {
+  revision 2019-01-11 {
     description
       "Initial revision.";
     reference
@@ -1288,24 +1188,24 @@ module ietf-softwire-br {
               leaf version {
                 type uint64;
                 description
+                  "Version number for this binding table.";
+              }
+              leaf date {
+                type yang:date-and-time;
+                description
                   "Timestamp when the binding table was activated.
 
                    A binding instance may be provided with binding 
                    entries that may change in time (e.g., increase
-                   the size of the port set). When an abuse party
-                   presents an external IP address/port, the version
+                   the size of the port set). When a party victim of an
+                   abuse presents an external IP address/port, the version
                    of the binding table is important because, depending 
                    on the version, a distinct customer may be 
                    identified.
 
                    The timestamp is used as a key to find the 
                    appropriate binding table that was put into effect 
-                   when an abuse occurred. ";
-              }
-              leaf date {
-                type yang:date-and-time;
-                description
-                  "Timestamp of the binding table";
+                   when an abuse occurred.";
                 reference
                   "RFC7422: Deterministic Address Mapping to Reduce 
                             Logging in Carrier-Grade NAT Deployments";
@@ -1634,7 +1534,7 @@ module ietf-softwire-br {
       the softwire CE and softwire BR YANG modules.</t>
 
       <figure>
-        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-common@2018-10-23.yang"
+        <artwork><![CDATA[<CODE BEGINS>file "ietf-softwire-common@2019-01-11.yang"
 
 module ietf-softwire-common {
   yang-version 1.1;
@@ -1680,7 +1580,7 @@ module ietf-softwire-common {
     "This document defines a YANG module defining types
      common to all A+P modules. 
 
-     Copyright (c) 2018 IETF Trust and the persons identified as
+     Copyright (c) 2019 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1693,7 +1593,7 @@ module ietf-softwire-common {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2018-10-23 {
+  revision 2019-01-11 {
     description
       "Initial revision.";
     reference
@@ -1758,8 +1658,8 @@ module ietf-softwire-common {
 
            An algorithm instance may be provided with mapping 
            rules that may change in time (for example, increase
-           the size of the port set). When an abuse party 
-           presents an external IP address/port, the version
+           the size of the port set). When a party victim of an 
+           abuse presents an external IP address/port, the version
            of the algorithm is important because depending on
            the version, a distinct customer may be identified.
 
@@ -2062,6 +1962,13 @@ module ietf-softwire-common {
       considered sensitive. Write operations (e.g., edit-config) applied to
       these data nodes without proper protection can negatively affect network
       operations.</t>
+
+      <t>If the BR is controlled by a non-authorized entity, this entity can
+      instruct the BR to install entries which in turn will induce a DDoS
+      attack by means of the notifications generated by the BR. This DDoS can
+      be softened by defining a notification interval, but given that this
+      interval parameter can be disabled or set to a low value by the
+      misbehaving entity, the same problem will be observed. </t>
     </section>
 
     <section anchor="iana" title="IANA Considerations">
@@ -2078,8 +1985,9 @@ module ietf-softwire-common {
 ]]></artwork>
       </figure>
 
-      <t>This document requests IANA to register the following URIs in the
-      "IETF XML Registry" <xref target="RFC3688"></xref>:<figure>
+      <t>This document requests IANA to register the following in the "ns"
+      subregistry within the "IETF XML Registry" <xref
+      target="RFC3688"></xref>: <figure>
           <artwork><![CDATA[         URI: urn:ietf:params:xml:ns:yang:ietf-softwire-ce
          Registrant Contact: The IESG.
          XML: N/A; the requested URI is an XML namespace.
@@ -2094,8 +2002,8 @@ module ietf-softwire-common {
         </figure></t>
 
       <t>This document requests that IANA registers the following YANG modules
-      in the "YANG Module Names" registry <xref
-      target="RFC6020"></xref>:<figure>
+      in the "YANG Module Names" subregistry <xref target="RFC7950"></xref>
+      within the "YANG Parameters" registry.<figure>
           <artwork><![CDATA[         name: ietf-softwire-ce
          namespace: urn:ietf:params:xml:ns:yang:ietf-softwire-ce
          prefix: softwire-ce
@@ -2122,6 +2030,49 @@ module ietf-softwire-common {
 
       <t>Special thanks to Tom Petch and Martin Bjorklund for the detailed
       review and suggestions.</t>
+    </section>
+
+    <section title="Authors">
+      <t>The following individuals are co-authors:<figure>
+          <artwork><![CDATA[   Yong Cui
+   Tsinghua University
+   Beijing  100084
+   P.R. China
+   Phone: +86-10-6260-3059
+   Email: cuiyong@tsinghua.edu.cn
+
+   Qi Sun
+   Tsinghua University
+   Beijing  100084
+   P.R. China
+   Phone: +86-10-6278-5822
+   Email: sunqi.ietf@gmail.com
+
+   Linhui Sun
+   Tsinghua University
+   Beijing  100084
+   P.R. China
+   Phone: +86-10-6278-5822
+   Email: lh.sunlinh@gmail.com
+
+   Sladjana Zechlin
+   Deutsche Telekom AG
+   Landgrabenweg 151
+   Bonn, NRW  53227
+   Germany
+   Email: sladjana.zechlin@telekom.de
+
+   Rajiv Asati
+   Cisco Systems, Inc.
+   7025 Kit Creek Rd.
+   RTP, NC  27709
+   USA
+   Email: Rajiva@cisco.com]]></artwork>
+        </figure></t>
+
+      <t></t>
+
+      <t></t>
     </section>
 
     <section anchor="contributors" title="Contributors">
