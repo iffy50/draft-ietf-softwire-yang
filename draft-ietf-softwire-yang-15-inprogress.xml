@@ -6,7 +6,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc autobreaks="no"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-softwire-yang-14" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-softwire-yang-15" ipr="trust200902">
   <front>
     <title abbrev="YANG Modules for A+P Softwires">YANG Modules for
     IPv4-in-IPv6 Address plus Port (A+P) Softwires</title>
